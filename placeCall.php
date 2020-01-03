@@ -38,7 +38,7 @@ if (!isset($to) || empty($to)) {
     'client:'.$to, // Call this number
     $callerId,     // From a valid Twilio number
     array(
-      'url' => 'https://'.$_SERVER['HTTP_HOST'].'/incoming.php'
+      'url' => 'http://demo.twilio.com/docs/voice.xml'
     )
   );
 }
