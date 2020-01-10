@@ -9,12 +9,46 @@
 include('./vendor/autoload.php');
 include('./config.php');
 
+use Medoo\Medoo;
+
 $callerId = 'client:quick_start';
 $to = isset($_POST["to"]) ? $_POST["to"] : "";
 if (!isset($to) || empty($to)) {
   $to = isset($_GET["to"]) ? $_GET["to"] : "";
 }
 
+$from = isset($_POST["from"]) ? $_POST["from"] : "";
+if (!isset($to) || empty($to)) {
+  $from = isset($_GET["from"]) ? $_GET["from"] : "";
+}
+
+// Database
+$database = new Medoo([
+    'database_type' => $DATABASE_TYPE,
+    'database_name' => $DATABASE_NAME,
+    'server' => $DATABASE_SERVER,
+    'username' => $DATABASE_USERNAME,
+    'password' => $DATABASE_PASSWORD
+]);
+
+$to_result = $database->select('clients', [
+    'id'
+], [
+    'identity' => $to
+]);
+
+
+$from_result = $database->select('clients', [
+    'id'
+], [
+    'identity' => $from
+]);
+
+$database->insert('calls', [
+  'from_client_id' => $from_result[0]['id'],
+  'to_client_id1' => $to_result[0]['id'],
+  'created_at' => date('Y-m-d H:i:s')
+]);
 /*
  * Use a valid Twilio number by adding to your account via https://www.twilio.com/console/phone-numbers/verified
  */
