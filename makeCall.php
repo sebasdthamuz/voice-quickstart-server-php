@@ -32,9 +32,9 @@ $database = new Medoo([
 ]);
 
 $to_result = $database->select('clients', [
-    'id'
+    'id', 'identity'
 ], [
-    'identity' => $to
+    'code_number' => $to
 ]);
 
 
@@ -53,7 +53,7 @@ $database->insert('calls', [
  * Use a valid Twilio number by adding to your account via https://www.twilio.com/console/phone-numbers/verified
  */
 $callerNumber = '1234567890';
-
+$to = $to_result[0]['identity']
 $response = new Twilio\Twiml();
 if (!isset($to) || empty($to)) {
   $response->say('Congratulations! You have just made your first call! Good bye.');
